@@ -135,6 +135,15 @@ client.on('message', message => {
       }
     }, 500);
   }
+
+  //
+  // Table flip and unflip table command. Just for fun
+  //
+  else if (message.content.startsWith('(╯°□°）╯︵ ┻━┻')) {
+    message.channel.send('┬─┬﻿ ノ( ゜-゜ノ)');
+  } else if (message.content.startsWith('┬─┬﻿ ノ( ゜-゜ノ)')) {
+    message.channel.send('U good boy');
+  }
 });
 
 // External file for token + bot login. Should be the last line
