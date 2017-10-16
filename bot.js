@@ -10,11 +10,29 @@ client.on('ready', () => {
 var prefix = ",";
 
 client.on('message', message => {
-  if (message.content === 'ping') {
-    message.reply('pong');
+
+  //
+  // Ping feature, should break at any time, no real value but fastest way to
+  // check if bot is online AND operational
+  //
+  if (message.content.startsWith(prefix + 'ping')) {
+    message.channel.send('Pong! Your ping is `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
   }
-  else if (message.content.startsWith(prefix + 'ping')) {
-        message.channel.sendMessage('Pong! Your ping is `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
+
+  //
+  // Invitation command
+  // TODO: Refactoring invite link
+  //
+  else if (message.content.startsWith(prefix + 'invite')) {
+    message.channel.send('Hey ! Invite me with https://discordapp.com/oauth2/authorize?&client_id=363812923530805248&scope=bot&permissions=8');
+  }
+
+  //
+  // Help command
+  // TODO: All 🙃
+  //
+  else if (message.content.startsWith(prefix + 'help')) {
+    message.channel.send('Kappa no time to spend on this bullshit atm ! 🙃');
   }
 });
 
