@@ -29,7 +29,6 @@ client.on('message', message => {
   if (message.content.startsWith(prefix + 'ping')) {
     message.channel.send('Pong! Your ping is `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
   }
-
   //
   // Invitation command
   // TODO: Refactoring invite link
@@ -44,6 +43,94 @@ client.on('message', message => {
   //
   else if (message.content.startsWith(prefix + 'help')) {
     message.channel.send('Kappa no time to spend on this bullshit atm ! 🙃');
+  }
+  //
+  //
+  //
+  else if (message.content.startsWith(prefix + 'role')) {
+
+    let myRole = message.guild.roles.find("name", "test");
+    let member = message.member;
+    let membersWithRole = message.guild.roles.get(myRole.id).members;
+
+    message.channel.send(`Got ${membersWithRole.size} members with that role. ` + member + ` sent this request !`);
+
+    member.addRole(myRole).catch(console.error);
+
+    message.channel.send(`Adding role !`);
+
+    if (message.member.roles.has(myRole.id)) {
+      message.channel.send(`Yay, the author of the message has the role!`);
+    } else {
+      message.channel.send(`Nope, noppers, nadda.`);
+    }
+  }
+  //
+  // Suicide command
+  // Suicide yourself _ON DISCORD_ in the easiest way you have ever seen (should be takken as a joke, really)
+  //
+  else if (message.content.startsWith(prefix + 'suicide')) {
+    try {
+      // Easy way to get member object though mentions.
+      var member = message.member;
+
+      // Kick
+      member.kick().then((member) => {
+        // Successmessage
+        message.channel.send(":wave: " + member.displayName + " has been successfully kicked :point_right: ");
+      }).catch(() => {
+        // Failmessage
+        message.channel.send("Access Denied");
+      });
+    } catch (e) {
+      message.channel.send('Unable to kick someone.');
+    }
+  }
+
+  //
+  // Roulette russe command
+  //
+  else if (message.content.startsWith(prefix + 'roulette russe') || message.content.startsWith(prefix + 'rr')) {
+
+    message.channel.send('Wow such ballzy guy comin\' here ! 😃');
+
+    setTimeout(function() {
+      message.channel.send('Ready to face the Evil himself ? Really ??')
+        .then(function(message) {
+          message.react("😈")
+        }).catch(function() {
+          console.log("There's an error while react the roulette russe");
+        });;
+    }, 200);
+
+    setTimeout(function() {
+      var random = Math.floor((Math.random() * 4) + 1);
+      if (random == 1) {
+        message.channel.send("U DED");
+
+        setTimeout(function() {
+          try {
+            // Easy way to get member object though mentions.
+            var member = message.member;
+
+            // Kick
+            member.kick().then((member) => {
+              // Successmessage
+              message.channel.send(":wave: " + member.displayName + " has been successfully kicked :point_right: ");
+            }).catch(() => {
+              // Failmessage
+              message.channel.send("Access Denied");
+            });
+          } catch (e) {
+            message.channel.send('Unable to kick someone.');
+          }
+        }, 3300);
+
+
+      } else {
+        message.channel.send("Pfew what a prank, there's no bullet this time.");
+      }
+    }, 500);
   }
 });
 
