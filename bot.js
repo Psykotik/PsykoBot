@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-var auth = require('./auth.json');
+var config = require('./config.json');
 
 
 client.on('ready', () => {
@@ -18,7 +18,7 @@ client.on("guildDelete", guild => {
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
-var prefix = ",";
+var prefix = config.prefix;
 
 client.on('message', message => {
 
@@ -29,6 +29,7 @@ client.on('message', message => {
   if (message.content.startsWith(prefix + 'ping')) {
     message.channel.send('Pong! Your ping is `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
   }
+
   //
   // Invitation command
   // TODO: Refactoring invite link
@@ -45,7 +46,8 @@ client.on('message', message => {
     message.channel.send('Kappa no time to spend on this bullshit atm ! 🙃');
   }
   //
-  //
+  // Role command
+  // TODO: Add arg to check wanted role (useless atm, checking only a test role, shouldn't be hardcoded)
   //
   else if (message.content.startsWith(prefix + 'role')) {
 
@@ -89,6 +91,7 @@ client.on('message', message => {
 
   //
   // Roulette russe command
+  // Generate a random number, and if it's 1, kick the user. (1/4 chance to be kicked by default)
   //
   else if (message.content.startsWith(prefix + 'roulette russe') || message.content.startsWith(prefix + 'rr')) {
 
@@ -104,7 +107,7 @@ client.on('message', message => {
     }, 200);
 
     setTimeout(function() {
-      var random = Math.floor((Math.random() * 4) + 1);
+      var random = Math.floor((Math.random() * 6) + 1);
       if (random == 1) {
         message.channel.send("U DED");
 
@@ -135,4 +138,4 @@ client.on('message', message => {
 });
 
 // External file for token + bot login. Should be the last line
-client.login(auth.token);
+client.login(config.token);
