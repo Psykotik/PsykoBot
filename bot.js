@@ -143,6 +143,8 @@ client.on('message', message => {
     message.channel.send('┬─┬﻿ ノ( ゜-゜ノ)');
   } else if (message.content.startsWith('┬─┬﻿ ノ( ゜-゜ノ)')) {
     message.channel.send('U good boy');
+  } else if (message.content.startsWith('/shrug')) {
+    message.channel.send('¯\\_(ツ)_/¯');
   }
 });
 
