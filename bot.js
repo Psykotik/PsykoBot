@@ -2,6 +2,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 var config = require('./config.json');
 
+var loc = config.language+'.json';
+var lang = require('./locale/'+loc);
+
 
 client.on('ready', () => {
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
@@ -27,7 +30,7 @@ client.on('message', message => {
   // check if bot is online AND operational
   //
   if (message.content.startsWith(prefix + 'ping')) {
-    message.channel.send('Pong! Your ping is `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
+    message.channel.send(lang.ping+' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
   }
 
   //
