@@ -1,9 +1,12 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-var config = require('./config.json');
+const config = require('./config.json');
 
-var loc = config.language+'.json';
-var lang = require('./locale/'+loc);
+const loc = config.language+'.json';
+const lang = require('./locale/'+loc);
+
+const prefix = config.prefix;
+
 
 
 client.on('ready', () => {
@@ -21,11 +24,11 @@ client.on("guildDelete", guild => {
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
-var prefix = config.prefix;
 
 
 client.on('message', message => {
 
+  // Split message with args.
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 
 
