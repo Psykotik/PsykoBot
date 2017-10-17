@@ -1,5 +1,6 @@
 {
   "_comments": "Create or rename this file to config.json, and fill the token field to your own Discord token. Then delete this line.",
   "token": "This-is.my.Discord-token",
-  "prefix": ","
+  "prefix": ",",
+  "language": "french"
 }
