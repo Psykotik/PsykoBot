@@ -1,4 +1,4 @@
-#PsykoBot
+# PsykoBot
 PsykoBot is a very simple Discord bot, with few features that you can run on your own ! The only needed thing is a computer !
 
 ## Table of Contents
@@ -34,15 +34,16 @@ The bot is very easy to configure. The only thing you need is a Discord Applicat
 
 Click on the (+) right here
 
-![Discord application menu](http://prntscr.com/gyyps0 "Discord application menu")
+<img src="http://prntscr.com/gyyps0"/>
 
 Then create your own bot
 
-![Discord bot menu](http://prntscr.com/gyytdg "Discord create bot")
+<img src="http://prntscr.com/gyytdg"/>
 
 And get the token here
 
-![Discord token](http://prntscr.com/gyyu97 "Discord create bot")
+<img src="http://prntscr.com/gyyu97"/>
+
 
 Token example : MzcwMjE2MjQzNDg1MDgxNjEx.DMj2sQ.zzuLfc83lhUfHtxX1QbahLEO_io (this one wont work obviously 🙂)
 
