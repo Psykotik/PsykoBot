@@ -5,6 +5,7 @@ PsykoBot is a very simple Discord bot, with few features that you can run on you
 - [Features](#features)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Basic Use](#basic-use)
 - [Resources](#resources)
 
 ## Features
@@ -32,22 +33,24 @@ $ git clone https://github.com/Psykotik/PsykoBot && cd ./PsykoBot
 
 The bot is very easy to configure. The only thing you need is a Discord Application Token. This token can be found on [this page](https://discordapp.com/developers/applications/me).
 
-Click on the (+) right here
+Help : If you don't really know how to get this token, you can check [this](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token).
 
-<img src="http://prntscr.com/gyyps0"/>
+Once you get the token, please fill the configExample.json with it and then, rename it to config.json.
 
-Then create your own bot
+```json
+{
+  "token": "This-is.my.Discord-token",
+  "prefix": ",",
+  "language": "english"
+}
+```
+Note : Language can be set to _english_ or _french_ at the moment. Feel free to translate it and pull request your work !
 
-<img src="http://prntscr.com/gyytdg"/>
+## Basic-use
 
-And get the token here
+Nothing hard here, just write ```,help``` to get help. The prefix can be changed on config.json before startup.
 
-<img src="http://prntscr.com/gyyu97"/>
-
-
-Token example : MzcwMjE2MjQzNDg1MDgxNjEx.DMj2sQ.zzuLfc83lhUfHtxX1QbahLEO_io (this one wont work obviously 🙂)
-
-## Ressources
+## Resources
 - [Discord application page](https://discordapp.com/developers/applications/me)
 - [Discord Developers](https://discordapp.com/developers/docs/intro)
 - [Discord.js](https://discord.js.org/#/)
