@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./config.json');
 
-const loc = config.language+'.json';
-const lang = require('./locale/'+loc);
+const loc = config.language + '.json';
+const lang = require('./locale/' + loc);
 
 const prefix = config.prefix;
 
@@ -36,7 +36,7 @@ client.on('message', message => {
   // check if bot is online AND operational
   //
   if (message.content.startsWith(prefix + 'ping')) {
-    message.channel.send(lang.ping+' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
+    message.channel.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
   }
 
   //
@@ -88,7 +88,7 @@ client.on('message', message => {
       // Kick
       member.kick().then((member) => {
         // Successmessage
-        message.channel.send(":wave: " + member.displayName + " " + lang.suicide );
+        message.channel.send(":wave: " + member.displayName + " " + lang.suicide);
       }).catch(() => {
         // Failmessage
         message.channel.send(lang.access_denied);
@@ -158,7 +158,7 @@ client.on('message', message => {
     if (!message.member.roles.some(r => ["Administrator", "Adminzer", "Le Roi Chien"].includes(r.name)))
       return message.reply(lang.error);
 
-    message.channel.send(lang.gimme + " " +lang.sniper);
+    message.channel.send(lang.gimme + " " + lang.sniper);
 
     message.channel.send(lang.fire_hit);
 
@@ -176,15 +176,19 @@ client.on('message', message => {
     if (!reason)
       return message.reply(lang.error_kickReason);
 
+    var kickedMemberName = member.user.tag;
+    var kickerName = message.author.username;
+    var formatted_reason = ` ${kickedMemberName} kicked by ${kickerName}. Roles was ${member.user._roles}. Reason :` +reason;
+    
     // Now, time for a swift kick in the nuts!
-    member.kick(reason)
+    member.kick(formatted_reason)
       .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-    message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
+    message.reply(`${kickedMemberName} has been kicked by ${kickerName} because: ${reason}`);
 
   }
 
   //
-  // Table flip and unflip table command. Just for fun
+  // Automatic response, nothing inportant here
   //
   else if (message.content.startsWith(lang.tableflip)) {
     message.channel.send(lang.unfliptable);
@@ -192,6 +196,8 @@ client.on('message', message => {
     message.channel.send(lang.good_boy);
   } else if (message.content.startsWith('shrug') || message.content.startsWith('/shrug')) {
     message.channel.send(lang.shrug);
+  } else if (message.content.startsWith('slt') || message.content.startsWith('cc') || message.content.startsWith('bjr') || message.content.startsWith('yo') || message.content.startsWith('salut') || message.content.startsWith('bonjour')) {
+    message.channel.send(`Hey ${message.author} !`);
   }
 });
 
