@@ -8,7 +8,6 @@ const lang = require('./locale/'+loc);
 const prefix = config.prefix;
 
 
-
 client.on('ready', () => {
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
   client.user.setGame(`┬─┬﻿ ノ( ゜-゜ノ)`);
@@ -45,7 +44,7 @@ client.on('message', message => {
   // TODO: Refactoring invite link
   //
   else if (message.content.startsWith(prefix + 'invite')) {
-    message.channel.send('Hey ! Invite me with https://discordapp.com/oauth2/authorize?&client_id=363812923530805248&scope=bot&permissions=8');
+    message.channel.send(lang.invite + 'https://discordapp.com/oauth2/authorize?&client_id=363812923530805248&scope=bot&permissions=8');
   }
 
   //
@@ -53,11 +52,11 @@ client.on('message', message => {
   // TODO: All 🙃
   //
   else if (message.content.startsWith(prefix + 'help')) {
-    message.channel.send('Kappa no time to spend on this bullshit atm ! 🙃');
+    message.channel.send(lang.help);
   }
   //
   // Role command
-  // TODO: Add arg to check wanted role (useless atm, checking only a test role, shouldn't be hardcoded)
+  // TODO: Add arg to check wanted role (useless atm, checking only a test role, shouldn't be hardcoded) + Add needed permissions to use the command
   //
   else if (message.content.startsWith(prefix + 'role')) {
 
@@ -89,13 +88,13 @@ client.on('message', message => {
       // Kick
       member.kick().then((member) => {
         // Successmessage
-        message.channel.send(":wave: " + member.displayName + " has been successfully kicked :point_right: ");
+        message.channel.send(":wave: " + member.displayName + " " + lang.suicide );
       }).catch(() => {
         // Failmessage
-        message.channel.send("Access Denied");
+        message.channel.send(lang.access_denied);
       });
     } catch (e) {
-      message.channel.send('Unable to kick someone.');
+      message.channel.send(lang.unable_to_kick);
     }
   }
 
@@ -105,21 +104,21 @@ client.on('message', message => {
   //
   else if (message.content.startsWith(prefix + 'roulette russe') || message.content.startsWith(prefix + 'rr')) {
 
-    message.channel.send('Wow such ballzy guy comin\' here ! 😃');
+    message.channel.send(lang.intro);
 
     setTimeout(function() {
-      message.channel.send('Ready to face the Evil himself ? Really ??')
+      message.channel.send(lang.intro2)
         .then(function(message) {
           message.react("😈")
         }).catch(function() {
-          console.log("There's an error while react the roulette russe");
+          console.log(lang.error);
         });;
     }, 200);
 
     setTimeout(function() {
       var random = Math.floor((Math.random() * 6) + 1);
       if (random == 1) {
-        message.channel.send("U DED");
+        message.channel.send(lang.rr_success);
 
         setTimeout(function() {
           try {
@@ -129,19 +128,19 @@ client.on('message', message => {
             // Kick
             member.kick().then((member) => {
               // Successmessage
-              message.channel.send(":wave: " + member.displayName + " has been successfully kicked :point_right: ");
+              message.channel.send(":wave: " + member.displayName + " " + lang.suicide);
             }).catch(() => {
               // Failmessage
-              message.channel.send("Access Denied");
+              message.channel.send(lang.access_denied);
             });
           } catch (e) {
-            message.channel.send('Unable to kick someone.');
+            message.channel.send(lang.unable_to_kick);
           }
         }, 3300);
 
 
       } else {
-        message.channel.send("Pfew what a prank, there's no bullet this time.");
+        message.channel.send(lang.rr_fail);
       }
     }, 500);
   }
@@ -149,31 +148,33 @@ client.on('message', message => {
   //
   // Fire command
   // Fire a bullet and kick someone
+  // TODO: Log the one who fired the bullet + aim precision + roles the fired got before being kicked
   //
   else if (message.content.startsWith(prefix + 'fire')) {
-
-    message.channel.send('(づ｡◕‿‿◕｡)づ ⌐╦╦═─');
-
-    message.channel.send('Keepo the bullet reach the target. He ded BOOM HEADSHOT');
 
     // This command must be limited to mods and admins. In this example we just hardcode the role names.
     // Please read on Array.some() to understand this bit:
     // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
     if (!message.member.roles.some(r => ["Administrator", "Adminzer", "Le Roi Chien"].includes(r.name)))
-      return message.reply("Sorry, you don't have permissions to use this!");
+      return message.reply(lang.error);
+
+    message.channel.send(lang.gimme + " " +lang.sniper);
+
+    message.channel.send(lang.fire_hit);
+
 
     // Let's first check if we have a member and if we can kick them!
     // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
     let member = message.mentions.members.first();
     if (!member)
-      return message.reply("Please mention a valid member of this server");
+      return message.reply(lang.error_unvalidUser);
     if (!member.kickable)
-      return message.reply("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
+      return message.reply(lang.error_higherRank);
 
     // slice(1) removes the first part, which here should be the user mention!
     let reason = args.slice(1).join(' ');
     if (!reason)
-      return message.reply("Please indicate a reason for the kick!");
+      return message.reply(lang.error_kickReason);
 
     // Now, time for a swift kick in the nuts!
     member.kick(reason)
@@ -185,12 +186,12 @@ client.on('message', message => {
   //
   // Table flip and unflip table command. Just for fun
   //
-  else if (message.content.startsWith('(╯°□°）╯︵ ┻━┻')) {
-    message.channel.send('┬─┬﻿ ノ( ゜-゜ノ)');
-  } else if (message.content.startsWith('┬─┬﻿ ノ( ゜-゜ノ)')) {
-    message.channel.send('U good boy');
-  } else if (message.content.startsWith('/shrug')) {
-    message.channel.send('¯\\_(ツ)_/¯');
+  else if (message.content.startsWith(lang.tableflip)) {
+    message.channel.send(lang.unfliptable);
+  } else if (message.content.startsWith(lang.unfliptable)) {
+    message.channel.send(lang.good_boy);
+  } else if (message.content.startsWith('shrug') || message.content.startsWith('/shrug')) {
+    message.channel.send(lang.shrug);
   }
 });
 

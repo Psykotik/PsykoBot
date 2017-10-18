@@ -1,3 +1,23 @@
 {
-  "ping": "Pong! Your ping is "
+  "ping": "Pong! Your ping is ",
+  "invite": "Hey ! Invite me using this link : ",
+  "help": "Kappa no time to spend on this bullshit atm ! 🙃",
+  "suicide": "is now feeding the fish. Rip in peace mi amigo :heart:",
+  "access_denied": "Access denied",
+  "unable_to_kick": "Unable to kick !",
+  "rr_intro": "Wow such ballzy guy comin'n here !😃",
+  "rr_intro2": "Ready to face the Evil himself ? Really ??",
+  "rr_error": "There's an error while react the roulette russe",
+  "rr_success": "U DED",
+  "rr_fail": "Pfew what a prank, there's no bullet this time.",
+  "fire_hit": "Keepo the bullet reach the target. He ded BOOM HEADSHOT",
+  "gimme": "(づ｡◕‿‿◕｡)づ",
+  "sniper": "⌐╦╦═─",
+  "tableflip": "(╯°□°）╯︵ ┻━┻",
+  "unfliptable":"┬─┬﻿ ノ( ゜-゜ノ)",
+  "shrug":"¯\\_(ツ)_/¯",
+  "error_unvalidUser": "Please mention a valid for of this server",
+  "error_higherRank": "I cannot kick this user! Do they have a higher role? Do I have kick permissions?",
+  "error_kickReason": "Please indicate a reason for the kick !",
+  "good_boy": "U good boy"
 }
