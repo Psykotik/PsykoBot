@@ -27,6 +27,16 @@ $ npm install --save discord.js
 
 # Clone the repository
 $ git clone https://github.com/Psykotik/PsykoBot && cd ./PsykoBot
+
+# Start the bot. Please go to #Configuration before starting the bot
+$ node bot.js
+```
+
+Note : Using ```node bot.js``` will start the bot BUT if you run it using a remote server, the bot will shutdown instantly after closing he SSH connection. You can instead use __screen__ to prevent it.
+
+```bash
+# sudo apt-get install screen if it's not installed.
+$ screen node bot.js
 ```
 
 ## Configuration
