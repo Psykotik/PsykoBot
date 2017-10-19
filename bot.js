@@ -196,9 +196,7 @@ client.on('message', message => {
     message.channel.send(lang.good_boy);
   } else if (message.content.startsWith('shrug') || message.content.startsWith('/shrug')) {
     message.channel.send(lang.shrug);
-  } else if (message.content.startsWith('slt') || message.content.startsWith('cc') || message.content.startsWith('bjr') || message.content.startsWith('yo') || message.content.startsWith('salut') || message.content.startsWith('bonjour')) {
-    message.channel.send(`Hey ${message.author} !`);
-  }
+  } 
 });
 
 // External file for token + bot login. Should be the last line
