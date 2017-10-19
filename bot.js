@@ -156,7 +156,7 @@ client.on('message', message => {
     // Please read on Array.some() to understand this bit:
     // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
     if (!message.member.roles.some(r => ["Administrator", "Adminzer", "Le Roi Chien"].includes(r.name)))
-      return message.reply(lang.error);
+      return message.reply(lang.fire_error);
 
     message.channel.send(lang.gimme + " " + lang.sniper);
 
@@ -179,11 +179,11 @@ client.on('message', message => {
     var kickedMemberName = member.user.tag;
     var kickerName = message.author.username;
     var formatted_reason = ` ${kickedMemberName} kicked by ${kickerName}. Roles was ${member.user._roles}. Reason :` +reason;
-    
+
     // Now, time for a swift kick in the nuts!
     member.kick(formatted_reason)
       .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-    message.reply(`${kickedMemberName} has been kicked by ${kickerName} because: ${reason}`);
+    message.reply(`${kickedMemberName} ` + lang.kick_message + ` ${kickerName}: ${reason}`);
 
   }
 

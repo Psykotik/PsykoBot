@@ -10,6 +10,7 @@
   "rr_error": "There's an error while react the roulette russe",
   "rr_success": "U DED",
   "rr_fail": "Pfew what a prank, there's no bullet this time.",
+  "fire_error": "There's an error firing this target. You must have an higher perm level.",
   "fire_hit": "Keepo the bullet reach the target. He ded BOOM HEADSHOT",
   "gimme": "(づ｡◕‿‿◕｡)づ",
   "sniper": "⌐╦╦═─",
@@ -19,5 +20,6 @@
   "error_unvalidUser": "Please mention a valid for of this server",
   "error_higherRank": "I cannot kick this user! Do they have a higher role? Do I have kick permissions?",
   "error_kickReason": "Please indicate a reason for the kick !",
+  "kick_message": "has been kicked by",
   "good_boy": "U good boy"
 }
