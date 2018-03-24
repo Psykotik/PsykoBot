@@ -37,6 +37,9 @@ client.on('message', message => {
   //
   if (message.content.startsWith(prefix + 'ping')) {
     message.channel.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
+    message.author.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
+    console.log(`Ping command : ` + message.author);
+
   }
 
   //
@@ -196,7 +199,7 @@ client.on('message', message => {
     message.channel.send(lang.good_boy);
   } else if (message.content.startsWith('shrug') || message.content.startsWith('/shrug')) {
     message.channel.send(lang.shrug);
-  } 
+  }
 });
 
 // External file for token + bot login. Should be the last line
