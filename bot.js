@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./config.json');
+const request = require('request');
+
 
 const loc = config.language + '.json';
 const lang = require('./locale/' + loc);
@@ -23,8 +25,6 @@ client.on("guildDelete", guild => {
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
-
-
 client.on('message', message => {
 
   // Split message with args.
@@ -37,8 +37,8 @@ client.on('message', message => {
   //
   if (message.content.startsWith(prefix + 'ping')) {
     message.channel.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
-    message.author.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
-    console.log(`Ping command : ` + message.author);
+    //message.author.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
+    //console.log(`Ping command : ` + message.author);
 
   }
 
@@ -48,6 +48,217 @@ client.on('message', message => {
   //
   else if (message.content.startsWith(prefix + 'invite')) {
     message.channel.send(lang.invite + 'https://discordapp.com/oauth2/authorize?&client_id=363812923530805248&scope=bot&permissions=8');
+  }
+
+  else if (message.content.startsWith(prefix + 'ilvl')) {
+
+    var commandcut = message.content.substr(",ilvl ".length); //cut "!bot " off of the start of the command
+    var msg = ""; //create message variable
+    var argumentarray = commandcut.split("-"); // split array by "," characters
+    argumentarray.forEach(function (element) { // foreach argument given
+      msg += element + " "; // add argument and space to message
+    }, this);
+
+    var Player = argumentarray[0];
+    var Realm = argumentarray[1];
+    var Region = argumentarray[2];
+
+    var apiLink = "https://raider.io/api/v1/characters/profile?region=" + Region + "&realm=" + Realm + "&name=" + Player + "&fields=gear"
+
+    message.channel.send("Hey, i'm fetching the ilvl for " + Player + " on server " + Realm + " ( " + Region + " )"); // send arguments into message's channel
+
+    request(apiLink, (error, response, body) => {
+      if (error) {
+        return console.error(error);
+      }
+      let json = body;
+      var parsedJson = JSON.parse(json);
+
+
+      if (parsedJson.hasOwnProperty('name')) {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            author: {
+              name: parsedJson.name + " informations"
+            },
+            title: "There's is the requested Player information",
+            fields: [{
+              name: "iLvl (equipped)",
+              value: parsedJson.gear.item_level_equipped
+            },
+            {
+              name: "iLvl (total)",
+              value: parsedJson.gear.item_level_total
+            }
+            ],
+            timestamp: new Date(),
+            footer: {
+              icon_url: client.user.avatarURL,
+              text: "Psykobot ©"
+            }
+          }
+        });
+      } else {
+        message.channel.send("The player " + Player + " wasn't found. Please check syntax.")
+        message.channel.send("The correct syntax is :\n**" + prefix + "ilvl PLAYER-REALM-REGION** \nExample: **,ilvl Khìjazi-Illidan-EU**")
+      }
+
+
+
+
+    })
+
+
+
+       /* message.channel.send({embed: {
+         color: 3447003,
+         author: {
+           name: client.user.username,
+           icon_url: client.user.avatarURL
+         },
+         title: "This is an embed",
+         url: "http://google.com",
+         description: "This is a test embed to showcase what they look like and what they can do.",
+         fields: [{
+             name: "Fields",
+             value: "They can have different fields with small headlines."
+           },
+           {
+             name: "Masked links",
+             value: "You can put [masked links](http://google.com) inside of rich embeds."
+           },
+           {
+             name: "Markdown",
+             value: "You can put all the *usual* **__Markdown__** inside of them."
+           }
+         ],
+         timestamp: new Date(),
+         footer: {
+           icon_url: client.user.avatarURL,
+           text: "© Example"
+         }
+       }
+     }); */
+
+  }
+
+  //
+  // Apex Legends
+  // TODO: 
+  //
+  else if (message.content.startsWith(prefix + 'apex')) {
+    
+    var commandcut = message.content.substr(",apex ".length); //cut "!bot " off of the start of the command
+    var msg = ""; //create message variable
+    var argumentarray = commandcut.split("-"); // split array by "," characters
+    argumentarray.forEach(function(element) { // foreach argument given
+      msg += element + " "; // add argument and space to message
+    }, this);
+
+    var Platform = argumentarray[0];
+    var Player = argumentarray[1];
+
+    var apiLink = "https://public-api.tracker.gg/apex/v1/standard/profile/" + Platform + "/" + Player ;
+
+    request(apiLink, (error, response, body) => {
+    if (error) {
+        return console.error(error);
+    }
+
+    request({
+      headers: {
+        'TRN-Api-Key': '8cd4a0c5-2599-442c-a362-38bd3d8caf34'
+      },
+      uri: apiLink,
+      method: 'GET'
+    }, function (err, res, body) {
+      //it works!
+      let json = body;
+      var parsedJson = JSON.parse(json); 
+      console.log(parsedJson);
+    });
+
+
+    let json = body;
+    var parsedJson = JSON.parse(json);
+
+
+    /* if(parsedJson.hasOwnProperty('name')){
+      message.channel.send({embed: {
+        color: 3447003,
+        author: {
+          name: parsedJson.name + " informations"
+        },
+        title: "There's is the requested Player information",
+        fields: [{
+            name: "iLvl (equipped)",
+            value: parsedJson.gear.item_level_equipped
+          },
+          {
+            name: "iLvl (total)",
+            value: parsedJson.gear.item_level_total
+          }
+        ],
+        timestamp: new Date(),
+        footer: {
+          icon_url: client.user.avatarURL,
+          text: "Psykobot ©"
+        }
+      }
+    });
+    } else {message.channel.send("The player " + Player + " wasn't found. Please check syntax.")
+   message.channel.send("The correct syntax is :\n**" + prefix + "ilvl PLAYER-REALM-REGION** \nExample: **,ilvl Khìjazi-Illidan-EU**")} */
+
+
+    
+
+    })
+
+  
+
+  //   message.channel.send({embed: {
+  //     color: 3447003,
+  //     author: {
+  //       name: client.user.username,
+  //       icon_url: client.user.avatarURL
+  //     },
+  //     title: "This is an embed",
+  //     url: "http://google.com",
+  //     description: "This is a test embed to showcase what they look like and what they can do.",
+  //     fields: [{
+  //         name: "Fields",
+  //         value: "They can have different fields with small headlines."
+  //       },
+  //       {
+  //         name: "Masked links",
+  //         value: "You can put [masked links](http://google.com) inside of rich embeds."
+  //       },
+  //       {
+  //         name: "Markdown",
+  //         value: "You can put all the *usual* **__Markdown__** inside of them."
+  //       }
+  //     ],
+  //     timestamp: new Date(),
+  //     footer: {
+  //       icon_url: client.user.avatarURL,
+  //       text: "© Example"
+  //     }
+  //   }
+  // });
+  
+  }
+
+  else if (message.content.startsWith(prefix + 'vdm')) {
+    const regex = /<p class=\"block hidden-xs\">\n<a href=\".*\">\n(.*) VDM/
+    request('https://www.viedemerde.fr/aleatoire', (error, response, body) => {
+      if (error) {
+        return console.error(error);
+      }
+      let vdm = regex.exec(body);
+      message.channel.send(vdm[1]);
+    })
+
   }
 
   //
@@ -109,21 +320,21 @@ client.on('message', message => {
 
     message.channel.send(lang.intro);
 
-    setTimeout(function() {
+    setTimeout(function () {
       message.channel.send(lang.intro2)
-        .then(function(message) {
+        .then(function (message) {
           message.react("😈")
-        }).catch(function() {
+        }).catch(function () {
           console.log(lang.error);
         });;
     }, 200);
 
-    setTimeout(function() {
+    setTimeout(function () {
       var random = Math.floor((Math.random() * 6) + 1);
       if (random == 1) {
         message.channel.send(lang.rr_success);
 
-        setTimeout(function() {
+        setTimeout(function () {
           try {
             // Easy way to get member object though mentions.
             var member = message.member;
@@ -181,7 +392,7 @@ client.on('message', message => {
 
     var kickedMemberName = member.user.tag;
     var kickerName = message.author.username;
-    var formatted_reason = ` ${kickedMemberName} kicked by ${kickerName}. Roles was ${member.user._roles}. Reason :` +reason;
+    var formatted_reason = ` ${kickedMemberName} kicked by ${kickerName}. Roles was ${member.user._roles}. Reason :` + reason;
 
     // Now, time for a swift kick in the nuts!
     member.kick(formatted_reason)
