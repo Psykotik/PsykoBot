@@ -164,19 +164,29 @@ client.on('message', message => {
 
     var Platform = argumentarray[0];
     var Player = argumentarray[1];
+    
+    if(Platform == null || Platform == '' || Player == null|| Platform == '') {
+      Platform = "0";
+      Player = "0";
 
+      message.channel.send("Hey, please use the command like this : ```,apex PLATFORM-PLAYER```"); // send arguments into message's channel
+   }
+
+    var apiLink2 = "https://apextab.com/api/search.php?platform=pc&search=iPsykotik";
     var apiLink = "https://public-api.tracker.gg/apex/v1/standard/profile/" + Platform + "/" + Player ;
 
-    request(apiLink, (error, response, body) => {
+
+
+    request(apiLink2, (error, response, body) => {
     if (error) {
         return console.error(error);
     }
-
+    // The API key should be added to config.json
     request({
       headers: {
         'TRN-Api-Key': '8cd4a0c5-2599-442c-a362-38bd3d8caf34'
       },
-      uri: apiLink,
+      uri: apiLink2,
       method: 'GET'
     }, function (err, res, body) {
       //it works!
@@ -185,73 +195,10 @@ client.on('message', message => {
       console.log(parsedJson);
     });
 
-
     let json = body;
-    var parsedJson = JSON.parse(json);
-
-
-    /* if(parsedJson.hasOwnProperty('name')){
-      message.channel.send({embed: {
-        color: 3447003,
-        author: {
-          name: parsedJson.name + " informations"
-        },
-        title: "There's is the requested Player information",
-        fields: [{
-            name: "iLvl (equipped)",
-            value: parsedJson.gear.item_level_equipped
-          },
-          {
-            name: "iLvl (total)",
-            value: parsedJson.gear.item_level_total
-          }
-        ],
-        timestamp: new Date(),
-        footer: {
-          icon_url: client.user.avatarURL,
-          text: "Psykobot ©"
-        }
-      }
-    });
-    } else {message.channel.send("The player " + Player + " wasn't found. Please check syntax.")
-   message.channel.send("The correct syntax is :\n**" + prefix + "ilvl PLAYER-REALM-REGION** \nExample: **,ilvl Khìjazi-Illidan-EU**")} */
-
-
-    
+    var parsedJson = JSON.parse(json);    
 
     })
-
-  
-
-  //   message.channel.send({embed: {
-  //     color: 3447003,
-  //     author: {
-  //       name: client.user.username,
-  //       icon_url: client.user.avatarURL
-  //     },
-  //     title: "This is an embed",
-  //     url: "http://google.com",
-  //     description: "This is a test embed to showcase what they look like and what they can do.",
-  //     fields: [{
-  //         name: "Fields",
-  //         value: "They can have different fields with small headlines."
-  //       },
-  //       {
-  //         name: "Masked links",
-  //         value: "You can put [masked links](http://google.com) inside of rich embeds."
-  //       },
-  //       {
-  //         name: "Markdown",
-  //         value: "You can put all the *usual* **__Markdown__** inside of them."
-  //       }
-  //     ],
-  //     timestamp: new Date(),
-  //     footer: {
-  //       icon_url: client.user.avatarURL,
-  //       text: "© Example"
-  //     }
-  //   }
-  // });
   
   }
 
