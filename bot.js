@@ -73,6 +73,8 @@ client.on('message', message => {
 
     message.channel.send("Hey, i'm fetching the ilvl for " + Player + " on server " + Realm + " ( " + Region + " )"); // send arguments into message's channel
 
+    console.log(getTime() + " Fetching iLVL for " + Player + " on server " + Realm + " ( " + Region + " )");
+
     request(apiLink, (error, response, body) => {
       if (error) {
         return console.error(error);
@@ -175,6 +177,7 @@ client.on('message', message => {
     var apiLink2 = "https://apextab.com/api/search.php?platform=pc&search=iPsykotik";
     var apiLink = "https://public-api.tracker.gg/apex/v1/standard/profile/" + Platform + "/" + Player ;
 
+    console.log(getTime() + " Executing the request https://public-api.tracker.gg/apex/v1/standard/profile/" + Platform + "/" + Player);
 
 
     request(apiLink2, (error, response, body) => {
@@ -365,6 +368,16 @@ client.on('message', message => {
     message.channel.send(lang.shrug);
   }
 });
+
+function getTime(){
+  var d = new Date();
+  var h = d.getHours();
+  var m = d.getMinutes();
+  var s = d.getSeconds();
+  var ms = d.getMilliseconds();
+  var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']' ;
+  return timestamp;
+}
 
 // External file for token + bot login. Should be the last line
 client.login(config.token);
