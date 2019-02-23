@@ -11,8 +11,14 @@ const prefix = config.prefix;
 
 
 client.on('ready', () => {
-  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
-  client.user.setGame(`┬─┬﻿ ノ( ゜-゜ノ)`);
+  var d = new Date();
+  var h = d.getHours();
+  var m = d.getMinutes();
+  var s = d.getSeconds();
+  var ms = d.getMilliseconds();
+  var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']' ;
+  console.log( timestamp + ` Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+  client.user.setPresence({ game: { name: 'being created' }, status: 'dnd' })
 });
 
 client.on("guildCreate", guild => {
