@@ -290,7 +290,7 @@ client.on('message', message => {
     message.channel.send(lang.help);
   }
   //
-  // Automatic response, nothing inportant here
+  // Automatic response, nothing important here
   //
   else if (message.content.startsWith(lang.tableflip)) {
     message.channel.send(lang.unfliptable);
