@@ -42,8 +42,9 @@ client.on('message', message => {
   // check if bot is online AND operational
   //
   if (message.content.startsWith(prefix + 'ping')) {
-    message.channel.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
-
+    var ping = Date.now() - message.createdTimestamp;
+    console.log(getTime() + " Ping command : " + ping + "ms");
+    message.channel.send(lang.ping + ' `' + ping + ' ms`');
   }
 
   //
@@ -51,6 +52,7 @@ client.on('message', message => {
   // TODO: Refactoring invite link
   //
   else if (message.content.startsWith(prefix + 'invite')) {
+    console.log(getTime() + " Invite command");
     message.channel.send(lang.invite + 'https://discordapp.com/oauth2/authorize?&client_id=363812923530805248&scope=bot&permissions=8');
   }
 
@@ -285,6 +287,8 @@ client.on('message', message => {
       let vdm = regex.exec(body);
       message.channel.send(vdm[1]);
     })
+    console.log(getTime() + " VDM api call");
+
 
   }
 
@@ -295,139 +299,6 @@ client.on('message', message => {
   else if (message.content.startsWith(prefix + 'help')) {
     message.channel.send(lang.help);
   }
-  //
-  // Role command
-  // TODO: Add arg to check wanted role (useless atm, checking only a test role, shouldn't be hardcoded) + Add needed permissions to use the command
-  //
-  else if (message.content.startsWith(prefix + 'role')) {
-
-    let myRole = message.guild.roles.find("name", "test");
-    let member = message.member;
-    let membersWithRole = message.guild.roles.get(myRole.id).members;
-
-    message.channel.send(`Got ${membersWithRole.size} members with that role. ` + member + ` sent this request !`);
-
-    member.addRole(myRole).catch(console.error);
-
-    message.channel.send(`Adding role !`);
-
-    if (message.member.roles.has(myRole.id)) {
-      message.channel.send(`Yay, the author of the message has the role!`);
-    } else {
-      message.channel.send(`Nope, noppers, nadda.`);
-    }
-  }
-  //
-  // Suicide command
-  // Suicide yourself _ON DISCORD_ in the easiest way you have ever seen (should be takken as a joke, really)
-  //
-  else if (message.content.startsWith(prefix + 'suicide')) {
-    try {
-      // Easy way to get member object though mentions.
-      var member = message.member;
-
-      // Kick
-      member.kick().then((member) => {
-        // Successmessage
-        message.channel.send(":wave: " + member.displayName + " " + lang.suicide);
-      }).catch(() => {
-        // Failmessage
-        message.channel.send(lang.access_denied);
-      });
-    } catch (e) {
-      message.channel.send(lang.unable_to_kick);
-    }
-  }
-
-  //
-  // Roulette russe command
-  // Generate a random number, and if it's 1, kick the user. (1/4 chance to be kicked by default)
-  //
-  else if (message.content.startsWith(prefix + 'roulette russe') || message.content.startsWith(prefix + 'rr')) {
-
-    message.channel.send(lang.intro);
-
-    setTimeout(function () {
-      message.channel.send(lang.intro2)
-        .then(function (message) {
-          message.react("😈")
-        }).catch(function () {
-          console.log(lang.error);
-        });;
-    }, 200);
-
-    setTimeout(function () {
-      var random = Math.floor((Math.random() * 6) + 1);
-      if (random == 1) {
-        message.channel.send(lang.rr_success);
-
-        setTimeout(function () {
-          try {
-            // Easy way to get member object though mentions.
-            var member = message.member;
-
-            // Kick
-            member.kick().then((member) => {
-              // Successmessage
-              message.channel.send(":wave: " + member.displayName + " " + lang.suicide);
-            }).catch(() => {
-              // Failmessage
-              message.channel.send(lang.access_denied);
-            });
-          } catch (e) {
-            message.channel.send(lang.unable_to_kick);
-          }
-        }, 3300);
-
-
-      } else {
-        message.channel.send(lang.rr_fail);
-      }
-    }, 500);
-  }
-
-  //
-  // Fire command
-  // Fire a bullet and kick someone
-  // TODO: Log the one who fired the bullet + aim precision + roles the fired got before being kicked
-  //
-  else if (message.content.startsWith(prefix + 'fire')) {
-
-    // This command must be limited to mods and admins. In this example we just hardcode the role names.
-    // Please read on Array.some() to understand this bit:
-    // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
-    if (!message.member.roles.some(r => ["Administrator", "Adminzer", "Le Roi Chien"].includes(r.name)))
-      return message.reply(lang.fire_error);
-
-    message.channel.send(lang.gimme + " " + lang.sniper);
-
-    message.channel.send(lang.fire_hit);
-
-
-    // Let's first check if we have a member and if we can kick them!
-    // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
-    let member = message.mentions.members.first();
-    if (!member)
-      return message.reply(lang.error_unvalidUser);
-    if (!member.kickable)
-      return message.reply(lang.error_higherRank);
-
-    // slice(1) removes the first part, which here should be the user mention!
-    let reason = args.slice(1).join(' ');
-    if (!reason)
-      return message.reply(lang.error_kickReason);
-
-    var kickedMemberName = member.user.tag;
-    var kickerName = message.author.username;
-    var formatted_reason = ` ${kickedMemberName} kicked by ${kickerName}. Roles was ${member.user._roles}. Reason :` + reason;
-
-    // Now, time for a swift kick in the nuts!
-    member.kick(formatted_reason)
-      .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-    message.reply(`${kickedMemberName} ` + lang.kick_message + ` ${kickerName}: ${reason}`);
-
-  }
-
   //
   // Automatic response, nothing inportant here
   //
