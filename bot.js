@@ -9,15 +9,15 @@ const lang = require('./locale/' + loc);
 
 const prefix = config.prefix;
 
-
+console.log(getTime() + " Bot is starting");
 client.on('ready', () => {
   var d = new Date();
   var h = d.getHours();
   var m = d.getMinutes();
   var s = d.getSeconds();
   var ms = d.getMilliseconds();
-  var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']' ;
-  console.log( timestamp + ` Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+  var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']';
+  console.log(timestamp + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
   client.user.setPresence({ game: { name: 'being created' }, status: 'dnd' })
 });
 
@@ -43,8 +43,6 @@ client.on('message', message => {
   //
   if (message.content.startsWith(prefix + 'ping')) {
     message.channel.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
-    //message.author.send(lang.ping + ' `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
-    //console.log(`Ping command : ` + message.author);
 
   }
 
@@ -81,6 +79,7 @@ client.on('message', message => {
       }
       let json = body;
       var parsedJson = JSON.parse(json);
+      console.log(parsedJson);
 
 
       if (parsedJson.hasOwnProperty('name')) {
@@ -119,35 +118,35 @@ client.on('message', message => {
 
 
 
-       /* message.channel.send({embed: {
-         color: 3447003,
-         author: {
-           name: client.user.username,
-           icon_url: client.user.avatarURL
-         },
-         title: "This is an embed",
-         url: "http://google.com",
-         description: "This is a test embed to showcase what they look like and what they can do.",
-         fields: [{
-             name: "Fields",
-             value: "They can have different fields with small headlines."
-           },
-           {
-             name: "Masked links",
-             value: "You can put [masked links](http://google.com) inside of rich embeds."
-           },
-           {
-             name: "Markdown",
-             value: "You can put all the *usual* **__Markdown__** inside of them."
-           }
-         ],
-         timestamp: new Date(),
-         footer: {
-           icon_url: client.user.avatarURL,
-           text: "© Example"
-         }
-       }
-     }); */
+    /* message.channel.send({embed: {
+      color: 3447003,
+      author: {
+        name: client.user.username,
+        icon_url: client.user.avatarURL
+      },
+      title: "This is an embed",
+      url: "http://google.com",
+      description: "This is a test embed to showcase what they look like and what they can do.",
+      fields: [{
+          name: "Fields",
+          value: "They can have different fields with small headlines."
+        },
+        {
+          name: "Masked links",
+          value: "You can put [masked links](http://google.com) inside of rich embeds."
+        },
+        {
+          name: "Markdown",
+          value: "You can put all the *usual* **__Markdown__** inside of them."
+        }
+      ],
+      timestamp: new Date(),
+      footer: {
+        icon_url: client.user.avatarURL,
+        text: "© Example"
+      }
+    }
+  }); */
 
   }
 
@@ -155,54 +154,126 @@ client.on('message', message => {
   // Apex Legends
   // TODO: 
   //
-  else if (message.content.startsWith(prefix + 'apex')) {
-    
-    var commandcut = message.content.substr(",apex ".length); //cut "!bot " off of the start of the command
+  else if (message.content.startsWith(prefix + 'a')) {
+
+    var commandcut = message.content.substr(",a ".length); //cut "!bot " off of the start of the command
     var msg = ""; //create message variable
     var argumentarray = commandcut.split("-"); // split array by "," characters
-    argumentarray.forEach(function(element) { // foreach argument given
+    argumentarray.forEach(function (element) { // foreach argument given
       msg += element + " "; // add argument and space to message
     }, this);
 
     var Platform = argumentarray[0];
     var Player = argumentarray[1];
-    
-    if(Platform == null || Platform == '' || Player == null|| Platform == '') {
+
+    if (Platform == null || Platform == '' || Player == null || Platform == '') {
       Platform = "0";
       Player = "0";
-
       message.channel.send("Hey, please use the command like this : ```,apex PLATFORM-PLAYER```"); // send arguments into message's channel
-   }
+      return ("error");
 
-    var apiLink2 = "https://apextab.com/api/search.php?platform=pc&search=iPsykotik";
-    var apiLink = "https://public-api.tracker.gg/apex/v1/standard/profile/" + Platform + "/" + Player ;
-
-    console.log(getTime() + " Executing the request https://public-api.tracker.gg/apex/v1/standard/profile/" + Platform + "/" + Player);
-
-
-    request(apiLink2, (error, response, body) => {
-    if (error) {
-        return console.error(error);
     }
-    // The API key should be added to config.json
-    request({
-      headers: {
-        'TRN-Api-Key': '8cd4a0c5-2599-442c-a362-38bd3d8caf34'
-      },
-      uri: apiLink2,
-      method: 'GET'
-    }, function (err, res, body) {
-      //it works!
+
+    // Platform = "pc";
+    // Player = "iPsykotik";
+
+    var apiLink = "https://apextab.com/api/search.php?platform=" + Platform + "&search=" + Player;
+
+    console.log(getTime() + " Executing the request " + apiLink);
+
+
+    //First API Call to get AID
+    request(apiLink, function (error, response, body) {
+
+      if (error) {
+        return console.error(error);
+      }
+
       let json = body;
-      var parsedJson = JSON.parse(json); 
+      var parsedJson = JSON.parse(json);
       console.log(parsedJson);
+      if (parsedJson.hasOwnProperty('results')) {
+
+        var aid = parsedJson.results[0].aid;
+        console.log(aid);
+      } else {
+        message.channel.send("Hey, the user " + Player + " doesn't exists"); // send arguments into message's channel
+        return ("error");
+      }
+
+      var apiLink2 = "https://apextab.com/api/player.php?aid=" + aid;
+
+      //Second API Call for stats
+      console.log(getTime() + " Executing the request " + apiLink2);
+
+      request(apiLink2, function (error, response, body) {
+
+        if (error) {
+          return console.error(error);
+        }
+        let json = body;
+        var parsedJson = JSON.parse(json);
+        console.log(parsedJson);
+
+
+        if (parsedJson.hasOwnProperty('name')) {
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              author: {
+                name: parsedJson.name + " statistics"
+              },
+              title: "There's is the requested Player information",
+              fields: [{
+                name: "Platform",
+                value: parsedJson.platform
+              },
+              {
+                name: "Best legend",
+                value: parsedJson.legend
+              },
+              {
+                name: "Level",
+                value: parsedJson.level
+              }
+              ],
+              timestamp: new Date(),
+              footer: {
+                icon_url: client.user.avatarURL,
+                text: "Psykobot ©"
+              }
+            }
+          });
+        }
+
+      })
+
     });
 
-    let json = body;
-    var parsedJson = JSON.parse(json);    
 
-    })
-  
+    // request(apiLink2, (error, response, body) => {
+    // if (error) {
+    //     return console.error(error);
+    // }
+    // The API key should be added to config.json
+    // request({
+    //   headers: {
+    //     'TRN-Api-Key': '8cd4a0c5-2599-442c-a362-38bd3d8caf34'
+    //   },
+    //   uri: apiLink2,
+    //   method: 'GET'
+    // }, function (err, res, body) {
+    //   //it works!
+    //   let json = body;
+    //   var parsedJson = JSON.parse(json); 
+    //   console.log(parsedJson);
+    // });
+
+    // let json = body;
+    // var parsedJson = JSON.parse(json);    
+
+    // })
+
   }
 
   else if (message.content.startsWith(prefix + 'vdm')) {
@@ -369,13 +440,13 @@ client.on('message', message => {
   }
 });
 
-function getTime(){
+function getTime() {
   var d = new Date();
   var h = d.getHours();
   var m = d.getMinutes();
   var s = d.getSeconds();
   var ms = d.getMilliseconds();
-  var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']' ;
+  var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']';
   return timestamp;
 }
 
