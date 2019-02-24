@@ -1,0 +1,24 @@
+{
+  "name": "psykobot",
+  "version": "1.0.0",
+  "description": "PsykoBot is a very simple Discord bot, with few features that you can run on your own ! The only needed thing is a computer !",
+  "main": "bot.js",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Psykotik/PsykoBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Psykotik/PsykoBot/issues"
+  },
+  "homepage": "https://github.com/Psykotik/PsykoBot#readme"
+}
