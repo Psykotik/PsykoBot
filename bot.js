@@ -91,7 +91,7 @@ client.on('message', message => {
             author: {
               name: parsedJson.name + " informations"
             },
-            title: "There's is the requested Player information",
+            title: parsedJson.name + " " + "( " + parsedJson.race +  " ) " + parsedJson.class + " " + parsedJson.active_spec_name + " " + parsedJson.faction + "" + "",
             fields: [{
               name: "iLvl (equipped)",
               value: parsedJson.gear.item_level_equipped
