@@ -307,6 +307,47 @@ client.on('message', message => {
   } else if (message.content.startsWith('shrug') || message.content.startsWith('/shrug')) {
     message.channel.send(lang.shrug);
   }
+
+
+
+
+  else if (message.content.startsWith(prefix + 'test')) {
+    const embed = {
+      "title": "title ~~(did you know you can have markdown here too?)~~",
+      "description": "this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```",
+      "url": "https://discordapp.com",
+      "color": 13447987,
+      "timestamp": new Date(),
+      "footer": {
+        "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+        "text": "footer text"
+      },
+      "thumbnail": {
+        "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+      },
+      "image": {
+        "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+      },
+      "author": {
+        "name": "author name",
+        "url": parsedJson.avatar,
+        "icon_url": parsedJson.avatar
+      },
+      "fields": [
+        {
+          "name": "test1",
+          "value": "test2",
+          "inline": true
+        },
+        {
+          "name": "test2",
+          "value": "test2",
+          "inline": true
+        }
+      ]
+    };
+    message.channel.send("this `supports` __a__ **subset** *of* ~~markdown~~ 😃 ```js\nfunction foo(bar) {\n  console.log(bar);\n}\n\nfoo(1);```", { embed });
+  }
 });
 
 function getTime() {
