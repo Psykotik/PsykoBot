@@ -6,6 +6,8 @@ const request = require('request');
 // Bot's requirement
 const tools = require('./src/tools');
 const adminCmds = require('./src/adminCmds');
+const apex = require('./src/apexLegends');
+const wow = require('./src/worldOfWarcraft');
 
 const loc = config.language + '.json';
 const lang = require('./locale/' + loc);
@@ -58,11 +60,19 @@ client.on('message', message => {
     var Realm = argumentarray[1];
     var Region = argumentarray[2];
 
+    
+    
+
     var apiLink = "https://raider.io/api/v1/characters/profile?region=" + Region + "&realm=" + Realm + "&name=" + Player + "&fields=gear"
 
     message.channel.send("Hey, i'm fetching the ilvl for " + Player + " on server " + Realm + " ( " + Region + " )"); // send arguments into message's channel
 
-    console.log(getTime() + " Fetching iLVL for " + Player + " on server " + Realm + " ( " + Region + " )");
+    console.log(tools.getTime() + " Fetching iLVL for " + Player + " on server " + Realm + " ( " + Region + " )");
+
+    //console.log(wow.ilvl(Player, Realm, Region, client.user.avatarURL));
+/*     tools.sleep(3000);
+    console.log(embed);
+    message.channel.send(embed); */
 
     request(apiLink, (error, response, body) => {
       if (error) {
@@ -80,7 +90,7 @@ client.on('message', message => {
             author: {
               name: parsedJson.name + " informations"
             },
-            title: parsedJson.name + " " + "( " + parsedJson.race +  " ) " + parsedJson.class + " " + parsedJson.active_spec_name + " " + parsedJson.faction + "" + "",
+            title: parsedJson.name + " " + "( " + parsedJson.race + " ) " + parsedJson.class + " " + parsedJson.active_spec_name + " " + parsedJson.faction + "" + "",
             fields: [{
               name: "iLvl (equipped)",
               value: parsedJson.gear.item_level_equipped
@@ -157,18 +167,19 @@ client.on('message', message => {
     var Platform = argumentarray[0];
     var Player = argumentarray[1];
 
-     if (Platform == null || Platform == '' || Player == null || Platform == '') {
-       Platform = "0";
-       Player = "0";
-       message.channel.send({embed: {
-        color: 13447987,
-        author: {
-          name: client.user.username,
-          icon_url: client.user.avatarURL
-        },
-        title: "Use of apex command",
-        description: "Please use the apex command with the following syntax : ```,apex PLATFORM-PLAYER```",
-        fields: [{
+    if (Platform == null || Platform == '' || Player == null || Platform == '') {
+      Platform = "0";
+      Player = "0";
+      message.channel.send({
+        embed: {
+          color: 13447987,
+          author: {
+            name: client.user.username,
+            icon_url: client.user.avatarURL
+          },
+          title: "Use of apex command",
+          description: "Please use the apex command with the following syntax : ```,apex PLATFORM-PLAYER```",
+          fields: [{
             name: "Note",
             value: "You have to follow the instructions below in case you can't retrieve your stats."
           },
@@ -180,18 +191,18 @@ client.on('message', message => {
             name: "Why only kills are displayed?",
             value: "For us to track your headshots and matches, you must add them to your banner as well."
           }
-        ],
-        timestamp: new Date(),
-        footer: {
-          icon_url: client.user.avatarURL,
-          text: ""
+          ],
+          timestamp: new Date(),
+          footer: {
+            icon_url: client.user.avatarURL,
+            text: ""
+          }
         }
       }
+      );
+      return ("error");
+
     }
-    );
-       return ("error");
- 
-     }
 
     var apiLink = "https://apextab.com/api/search.php?platform=" + Platform + "&search=" + Player;
 
