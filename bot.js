@@ -3,21 +3,19 @@ const client = new Discord.Client();
 const config = require('./config.json');
 const request = require('request');
 
+// Bot's requirement
+const tools = require('./src/tools');
+const adminCmds = require('./src/adminCmds');
 
 const loc = config.language + '.json';
 const lang = require('./locale/' + loc);
 
 const prefix = config.prefix;
 
-console.log(getTime() + " Bot is starting");
+console.log(tools.getTime() + " Bot is starting");
+
 client.on('ready', () => {
-  var d = new Date();
-  var h = d.getHours();
-  var m = d.getMinutes();
-  var s = d.getSeconds();
-  var ms = d.getMilliseconds();
-  var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']';
-  console.log(timestamp + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+  console.log(tools.getTime() + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
   client.user.setPresence({ game: { name: 'being created' }, status: 'dnd' })
 });
 
@@ -32,29 +30,20 @@ client.on("guildDelete", guild => {
 });
 
 client.on('message', message => {
-
   // Split message with args.
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-
 
   //
   // Ping feature, should break at any time, no real value but fastest way to
   // check if bot is online AND operational
   //
-  if (message.content.startsWith(prefix + 'ping')) {
-    var ping = Date.now() - message.createdTimestamp;
-    console.log(getTime() + " Ping command : " + ping + "ms");
-    message.channel.send(lang.ping + ' `' + ping + ' ms`');
-  }
+  if (message.content.startsWith(prefix + 'ping'))
+    message.channel.send(lang.ping + ' `' + adminCmds.ping(message.createdTimestamp) + ' ms`');
+  else if (message.content.startsWith(prefix + 'uptime'))
+    message.channel.send(adminCmds.uptime(client.uptime));
+  else if (message.content.startsWith(prefix + 'invite'))
+    message.channel.send(adminCmds.invite());
 
-  //
-  // Invitation command
-  // TODO: Refactoring invite link
-  //
-  else if (message.content.startsWith(prefix + 'invite')) {
-    console.log(getTime() + " Invite command");
-    message.channel.send(lang.invite + 'https://discordapp.com/oauth2/authorize?&client_id=363812923530805248&scope=bot&permissions=8');
-  }
 
   else if (message.content.startsWith(prefix + 'ilvl')) {
 
@@ -206,7 +195,7 @@ client.on('message', message => {
 
     var apiLink = "https://apextab.com/api/search.php?platform=" + Platform + "&search=" + Player;
 
-    console.log(getTime() + " Executing the request " + apiLink);
+    console.log(tools.getTime() + " Executing the request " + apiLink);
 
     //First API Call to get AID
     request(apiLink, function (error, response, body) {
@@ -226,7 +215,7 @@ client.on('message', message => {
       var apiLink2 = "https://apextab.com/api/player.php?aid=" + aid;
 
       //Second API Call for stats
-      console.log(getTime() + " Executing the request " + apiLink2);
+      console.log(tools.getTime() + " Executing the request " + apiLink2);
 
       request(apiLink2, function (error, response, body) {
 
@@ -268,37 +257,6 @@ client.on('message', message => {
 
   }
 
-  else if (message.content.startsWith(prefix + 'vdm')) {
-    const regex = /<p class=\"block hidden-xs\">\n<a href=\".*\">\n(.*) VDM/
-    request('https://www.viedemerde.fr/aleatoire', (error, response, body) => {
-      if (error) {
-        return console.error(error);
-      }
-      let vdm = regex.exec(body);
-      message.channel.send(vdm[1]);
-    })
-    console.log(getTime() + " VDM api call");
-
-
-  }
-
-  //
-  // Help command
-  // TODO: All 🙃
-  //
-  else if (message.content.startsWith(prefix + 'help')) {
-    //message.channel.send(lang.help);
-    let totalSeconds = (client.uptime / 1000);
-    let days = Math.floor(totalSeconds / 86400);
-    totalSeconds %= 86400;
-    let hours = Math.floor(totalSeconds / 3600);
-    totalSeconds %= 3600;
-    let minutes = Math.floor(totalSeconds / 60);
-    let seconds = Math.round(totalSeconds % 60);
-    let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
-    message.channel.send(uptime);
-    console.log(getTime() + " Help call");
-  }
   //
   // Automatic response, nothing important here
   //
@@ -309,58 +267,8 @@ client.on('message', message => {
   } else if (message.content.startsWith('shrug') || message.content.startsWith('/shrug')) {
     message.channel.send(lang.shrug);
   }
-
-
-
-
-  else if (message.content.startsWith(prefix + 'test')) {
-    const embed = {
-      "title": "title ~~(did you know you can have markdown here too?)~~",
-      "description": "this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```",
-      "url": "https://discordapp.com",
-      "color": 13447987,
-      "timestamp": new Date(),
-      "footer": {
-        "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
-        "text": "footer text"
-      },
-      "thumbnail": {
-        "url": "https://cdn.discordapp.com/embed/avatars/0.png"
-      },
-      "image": {
-        "url": "https://cdn.discordapp.com/embed/avatars/0.png"
-      },
-      "author": {
-        "name": "author name",
-        "url": parsedJson.avatar,
-        "icon_url": parsedJson.avatar
-      },
-      "fields": [
-        {
-          "name": "test1",
-          "value": "test2",
-          "inline": true
-        },
-        {
-          "name": "test2",
-          "value": "test2",
-          "inline": true
-        }
-      ]
-    };
-    message.channel.send("this `supports` __a__ **subset** *of* ~~markdown~~ 😃 ```js\nfunction foo(bar) {\n  console.log(bar);\n}\n\nfoo(1);```", { embed });
-  }
 });
 
-function getTime() {
-  var d = new Date();
-  var h = d.getHours();
-  var m = d.getMinutes();
-  var s = d.getSeconds();
-  var ms = d.getMilliseconds();
-  var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']';
-  return timestamp;
-}
 
 // External file for token + bot login. Should be the last line
 client.login(config.token);
