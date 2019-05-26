@@ -21,6 +21,20 @@ client.on('ready', () => {
   client.user.setPresence({ game: { name: 'being created' }, status: 'dnd' })
 });
 
+client.on('disconnected', function() {
+  console.log('Disconnected from Discord API Service. Attempting to reconnected...');
+});
+
+//Warnings from Discord.js
+client.on('warn', function(msg) {
+  console.log(msg);
+});
+
+client.on('error', function(err) {
+  console.log(err.message);
+  process.exit(1);
+});
+
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
