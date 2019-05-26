@@ -22,7 +22,7 @@ module.exports = {
     },
     invite: function () {
         console.log(tools.getTime() + " Invite command");
-        var inviteLink = "https://discordapp.com/oauth2/authorize?&client_id=363812923530805248&scope=bot&permissions=8";
+        var inviteLink = "https://discordapp.com/oauth2/authorize?&client_id=363812923530805248&scope=bot&permissions=134736960";
         return inviteLink;
     }
 };
