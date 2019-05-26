@@ -18,8 +18,9 @@ console.log(tools.getTime() + " Bot is starting");
 tools.logBoot(); // Logging the boot time
 
 client.on('ready', () => {
-  console.log(tools.getTime() + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
-  client.user.setPresence({ game: { name: 'being created' }, status: 'dnd' })
+  
+  tools.createLogFile(tools.getTime() + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+  client.user.setPresence({ game: { name: 'being created' }, status: 'dnd' });
 });
 
 client.on('disconnected', function() {
@@ -82,6 +83,7 @@ client.on('message', message => {
     message.channel.send("Hey, i'm fetching the ilvl for " + Player + " on server " + Realm + " ( " + Region + " )"); // send arguments into message's channel
 
     console.log(tools.getTime() + " Fetching iLVL for " + Player + " on server " + Realm + " ( " + Region + " )");
+    console.log(apiLink);
 
     //console.log(wow.ilvl(Player, Realm, Region, client.user.avatarURL));
 /*     tools.sleep(3000);

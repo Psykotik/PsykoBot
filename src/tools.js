@@ -3,10 +3,10 @@
 module.exports = {
   getTime: function () {
     var d = new Date();
-    var h = ("00" + d.getHours()).substr(-2,2);
-    var m = ("00" + d.getMinutes()).substr(-2,2);
-    var s = ("00" + d.getSeconds()).substr(-2,2);
-    var ms = ("000" + d.getMilliseconds()).substr(-3,3);
+    var h = ("00" + d.getHours()).substr(-2, 2);
+    var m = ("00" + d.getMinutes()).substr(-2, 2);
+    var s = ("00" + d.getSeconds()).substr(-2, 2);
+    var ms = ("000" + d.getMilliseconds()).substr(-3, 3);
     var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']';
     return timestamp;
   },
@@ -55,13 +55,33 @@ module.exports = {
       bootTimestampMS: timestampMS
     };
 
-    fs.writeFile(dirPath+"/"+fileName, JSON.stringify(Object, null, 4), (err) => {
+    fs.writeFile(dirPath + "/" + fileName, JSON.stringify(Object, null, 4), (err) => {
       if (err) {
         console.error(err);
         return;
       };
-      console.log(module.exports.getTime() + " File " + dirPath+ "/" + fileName + " has been created");
+      console.log(module.exports.getTime() + " File " + dirPath + "/" + fileName + " has been created");
     });
 
+
+
+  },
+  createLogFile: function (text) { // This function create the file for the current instance
+    var dirPath = "miscallenous";
+    var fileName = "log.txt";
+    var fs = require("fs");
+
+    console.log(text);
+
+    fs.writeFile(dirPath + "/" + fileName, text, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      };
+      console.log(module.exports.getTime() + " File " + dirPath + "/" + fileName + " has been created");
+    });
+  },
+  appendLogFile: function (text) { // This function append a new line each time it's called
+    console.log(text);
   }
 };
