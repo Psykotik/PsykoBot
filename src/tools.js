@@ -43,8 +43,29 @@ module.exports = {
 
     return dirCreated;
   },
-  createFile: function (filename) {
-    var filenameCreated = 0
-    
+  logBoot: function () {   // This files log boot time, for more accurate uptime function
+
+    var timestamp = new Date();
+    var timestampMS = Date.now();
+
+    var dirPath = "miscallenous";
+    var fileName = "bootTime.json";
+
+    module.exports.createDir(dirPath);
+
+    var fs = require("fs");
+    var Object = {
+      bootTimestamp: timestamp,
+      bootTimestampMS: timestampMS
+    };
+
+    fs.writeFile(dirPath+"/"+fileName, JSON.stringify(Object, null, 4), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      };
+      console.log(module.exports.getTime() + " File " + dirPath+ "/" + fileName + " has been created");
+    });
+
   }
 };

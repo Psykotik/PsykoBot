@@ -15,6 +15,7 @@ const lang = require('./locale/' + loc);
 const prefix = config.prefix;
 
 console.log(tools.getTime() + " Bot is starting");
+tools.logBoot(); // Logging the boot time
 
 client.on('ready', () => {
   console.log(tools.getTime() + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
@@ -59,7 +60,6 @@ client.on('message', message => {
     message.channel.send(adminCmds.uptime(client.uptime));
   else if (message.content.startsWith(prefix + 'invite'))
     message.channel.send(adminCmds.invite());
-
 
   else if (message.content.startsWith(prefix + 'ilvl')) {
 
