@@ -3,14 +3,10 @@
 module.exports = {
   getTime: function () {
     var d = new Date();
-    var h = d.getHours();
-    h = ("00" + h).substr(-2,2);
-    var m = d.getMinutes();
-    m = ("00" + m).substr(-2,2);
-    var s = d.getSeconds();
-    s = ("00" + s).substr(-2,2);
-    var ms = d.getMilliseconds();
-    ms = ("000" + ms).substr(-3,3);
+    var h = ("00" + d.getHours()).substr(-2,2);
+    var m = ("00" + d.getMinutes()).substr(-2,2);
+    var s = ("00" + d.getSeconds()).substr(-2,2);
+    var ms = ("000" + d.getMilliseconds()).substr(-3,3);
     var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']';
     return timestamp;
   },
@@ -32,12 +28,12 @@ module.exports = {
         if (err) {
           console.log(err);
         } else {
-          console.log("dir created");
+          console.log(module.exports.getTime() + " Directory " + path + " has been created");
           dirCreated = 1;
         }
       });
     } else {
-      console.log("dir already exist");
+      console.log(module.exports.getTime() + " Directory " + path + " already exist");
       dirCreated = 2;
     }
 
