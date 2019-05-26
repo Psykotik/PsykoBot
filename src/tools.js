@@ -17,5 +17,30 @@ module.exports = {
         break;
       }
     }
+  },
+  createDir: function (path) {
+    var dirCreated = 0;
+
+    const fs = require("fs");
+    if (!fs.existsSync(path)) {
+      var mkdirp = require('mkdirp');
+      mkdirp(path, function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("dir created");
+          dirCreated = 1;
+        }
+      });
+    } else {
+      console.log("dir already exist");
+      dirCreated = 2;
+    }
+
+    return dirCreated;
+  },
+  createFile: function (filename) {
+    var filenameCreated = 0
+    
   }
 };
