@@ -73,7 +73,7 @@ module.exports = {
 
     console.log(text);
 
-    fs.writeFile(dirPath + "/" + fileName, text, (err) => {
+    fs.writeFile(dirPath + "/" + fileName, text + "\n", (err) => {
       if (err) {
         console.error(err);
         return;
@@ -82,6 +82,15 @@ module.exports = {
     });
   },
   appendLogFile: function (text) { // This function append a new line each time it's called
+    var dirPath = "miscallenous";
+    var fileName = "log.txt";
+    var fs = require("fs");
+
     console.log(text);
+
+    fs.appendFile(dirPath + "/" + fileName, text + "\n", function (err) {
+      if (err) throw err;
+      //console.log('Saved!');
+    });
   }
 };

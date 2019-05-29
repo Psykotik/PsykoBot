@@ -14,37 +14,37 @@ const lang = require('./locale/' + loc);
 
 const prefix = config.prefix;
 
-console.log(tools.getTime() + " Bot is starting");
+tools.createLogFile(tools.getTime() + " Bot is starting");
 tools.logBoot(); // Logging the boot time
 
 client.on('ready', () => {
-  
-  tools.createLogFile(tools.getTime() + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+
+  tools.appendLogFile(tools.getTime() + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
   client.user.setPresence({ game: { name: 'being created' }, status: 'dnd' });
 });
 
-client.on('disconnected', function() {
-  console.log('Disconnected from Discord API Service. Attempting to reconnected...');
+client.on('disconnected', function () {
+  tools.appendLogFile('Disconnected from Discord API Service. Attempting to reconnected...');
 });
 
 //Warnings from Discord.js
-client.on('warn', function(msg) {
-  console.log(msg);
+client.on('warn', function (msg) {
+  tools.appendLogFile(msg);
 });
 
-client.on('error', function(err) {
-  console.log(err.message);
+client.on('error', function (err) {
+  tools.appendLogFile(err.message);
   process.exit(1);
 });
 
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
-  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  tools.appendLogFile(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 });
 
 client.on("guildDelete", guild => {
   // this event triggers when the bot is removed from a guild.
-  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  tools.appendLogFile(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
 client.on('message', message => {
@@ -75,20 +75,15 @@ client.on('message', message => {
     var Realm = argumentarray[1];
     var Region = argumentarray[2];
 
-    
-    
+
+
 
     var apiLink = "https://raider.io/api/v1/characters/profile?region=" + Region + "&realm=" + Realm + "&name=" + Player + "&fields=gear"
 
     message.channel.send("Hey, i'm fetching the ilvl for " + Player + " on server " + Realm + " ( " + Region + " )"); // send arguments into message's channel
 
-    console.log(tools.getTime() + " Fetching iLVL for " + Player + " on server " + Realm + " ( " + Region + " )");
-    console.log(apiLink);
-
-    //console.log(wow.ilvl(Player, Realm, Region, client.user.avatarURL));
-/*     tools.sleep(3000);
-    console.log(embed);
-    message.channel.send(embed); */
+    tools.appendLogFile(tools.getTime() + " Fetching iLVL for " + Player + " on server " + Realm + " ( " + Region + " )");
+    //console.log(apiLink);
 
     request(apiLink, (error, response, body) => {
       if (error) {
@@ -96,7 +91,7 @@ client.on('message', message => {
       }
       let json = body;
       var parsedJson = JSON.parse(json);
-      console.log(parsedJson);
+      //console.log(parsedJson);
 
 
       if (parsedJson.hasOwnProperty('name')) {
@@ -222,7 +217,7 @@ client.on('message', message => {
 
     var apiLink = "https://apextab.com/api/search.php?platform=" + Platform + "&search=" + Player;
 
-    console.log(tools.getTime() + " Executing the request " + apiLink);
+    tools.appendLogFile(tools.getTime() + " Executing the request " + apiLink);
 
     //First API Call to get AID
     request(apiLink, function (error, response, body) {
@@ -242,7 +237,7 @@ client.on('message', message => {
       var apiLink2 = "https://apextab.com/api/player.php?aid=" + aid;
 
       //Second API Call for stats
-      console.log(tools.getTime() + " Executing the request " + apiLink2);
+      tools.appendLogFile(tools.getTime() + " Executing the request " + apiLink2);
 
       request(apiLink2, function (error, response, body) {
 
