@@ -1,11 +1,11 @@
 // adminCmds.js
 // ========
 const tools = require('./tools');
+const Discord = require('discord.js');
 
 module.exports = {
     uptime: function (uptimeTime) {
-        tools.appendLogFile(tools.getTime() + " Uptime call");
-        let totalSeconds = (uptimeTime / 1000);
+        /*let totalSeconds = (uptimeTime / 1000);
         let days = Math.floor(totalSeconds / 86400);
         totalSeconds %= 86400;
         let hours = Math.floor(totalSeconds / 3600);
@@ -13,7 +13,49 @@ module.exports = {
         let minutes = Math.floor(totalSeconds / 60);
         let seconds = Math.round(totalSeconds % 60);
         let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
-        return uptime;
+        return uptime; */
+
+        function format(seconds) {
+            function pad(s) {
+                return (s < 10 ? '0' : '') + s;
+            }
+            var days = Math.floor(seconds / 86400);
+            var hours = Math.floor(seconds / (60 * 60));
+            var minutes = Math.floor(seconds % (60 * 60) / 60);
+            var seconds = Math.floor(seconds % 60);
+
+            return `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
+        }
+
+
+        function embedFormat(message) {
+
+            var embed = new Discord.RichEmbed()
+            .setTitle("Uptime")
+            .setColor("#CD3333")
+            .setDescription("Psykobot has started since " + message)
+            //.setFooter(parsedJson.name + " global rank is " + parsedJson.globalrank, parsedJson.avatar)
+            .setThumbnail("http://51.77.157.113/Psykobot/information.png")
+            .setTimestamp()
+            //.setURL("https://apextab.com/" + parsedJson.aid)
+            .addField("Uptime : " + message)
+            //.addField("Gibraltar", "Matches : **" + parsedJson.matches_Gibraltar + "** Kills : **" + parsedJson.kills_Gibraltar + "** Headshots : **" + parsedJson.headshots_Gibraltar + "** Damages : **" + parsedJson.damage_Gibraltar + "**")
+            //.addField("Lifeline", "Matches : **" + parsedJson.matches_Lifeline + "** Kills : **" + parsedJson.kills_Lifeline + "** Headshots : **" + parsedJson.headshots_Lifeline + "** Damages : **" + parsedJson.damage_Lifeline + "**")
+            //.addField("Pathfinder", "Matches : **" + parsedJson.matches_Pathfinder + "** Kills : **" + parsedJson.kills_Pathfinder + "** Headshots : **" + parsedJson.headshots_Pathfinder + "** Damages : **" + parsedJson.damage_Pathfinder + "**")
+            //.addField("Wraith", "Matches : **" + parsedJson.matches_Wraith + "** Kills : **" + parsedJson.kills_Wraith + "** Headshots : **" + parsedJson.headshots_Wraith + "** Damages : **" + parsedJson.damage_Wraith + "**")
+            //.addField("Bangalore", "Matches : **" + parsedJson.matches_Bangalore + "** Kills : **" + parsedJson.kills_Bangalore + "** Headshots : **" + parsedJson.headshots_Bangalore + "** Damages : **" + parsedJson.damage_Bangalore + "**")
+            //.addField("Caustic", "Matches : **" + parsedJson.matches_Caustic + "** Kills : **" + parsedJson.kills_Caustic + "** Headshots : **" + parsedJson.headshots_Caustic + "** Damages : **" + parsedJson.damage_Caustic + "**")
+            //.addField("Mirage", "Matches : **" + parsedJson.matches_Mirage + "** Kills : **" + parsedJson.kills_Mirage + "** Headshots : **" + parsedJson.headshots_Mirage + "** Damages : **" + parsedJson.damage_Mirage + "**")
+            //.addBlankField(true)
+            .addBlankField(true)
+
+            return embed;
+        }
+
+        var uptime = process.uptime();
+        tools.appendLogFile(tools.getTime() + " Uptime call (" + format(uptime) + ")");
+
+        return embedFormat(format(uptime));
     },
     ping: function (time) {
         var ping = Date.now() - time;
