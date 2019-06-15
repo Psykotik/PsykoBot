@@ -75,9 +75,38 @@ client.on('message', message => {
     var Realm = argumentarray[1];
     var Region = argumentarray[2];
 
+    wow.ilvl2(Player,Realm,Region,4);
 
+    var initializePromise = wow.ilvl2(Player,Realm,Region,4);
+    initializePromise.then(function(result) {
+        userDetails = result;
+        console.log("Initialized user details");
+        // Use user details from here
+        console.log(userDetails)
 
+        if (userDetails.hasOwnProperty('name')) {
+            var embed = new Discord.RichEmbed()
+                .setTitle("ilvl")
+                .setColor("#CD3333")
+                .setDescription("ilvl2 ")
+                //.setFooter(parsedJson.name + " global rank is " + parsedJson.globalrank, parsedJson.avatar)
+                .setThumbnail("http://51.77.157.113/Psykobot/information.png")
+                .setTimestamp()
+                //.setURL("https://apextab.com/" + parsedJson.aid)
+                .addField("toto")
+            message.channel.send(embed)
+            return embed;
 
+        }
+
+        message.channel.send("yoyo")
+        message.channel.send(userDetails)
+    }, function(err) {
+        console.log(err);
+    })
+
+    //message.channel.send(wow.ilvl2(Player,Realm,Region,4));
+ /*
     var apiLink = "https://raider.io/api/v1/characters/profile?region=" + Region + "&realm=" + Realm + "&name=" + Player + "&fields=gear"
 
     message.channel.send("Hey, i'm fetching the ilvl for " + Player + " on server " + Realm + " ( " + Region + " )"); // send arguments into message's channel
@@ -126,9 +155,9 @@ client.on('message', message => {
 
 
 
-    })
+    }) */
 
-
+    
 
     /* message.channel.send({embed: {
       color: 3447003,
@@ -288,6 +317,8 @@ client.on('message', message => {
     message.channel.send(lang.good_boy);
   } else if (message.content.startsWith('shrug') || message.content.startsWith('/shrug')) {
     message.channel.send(lang.shrug);
+  } else if (message.content.startsWith('Est-ce que rafou est nul ?') || message.content.startsWith('/shrug')) {
+    message.channel.send("Sah jsuis désolé de le dire mais ouais l'est vraiment pas futé le bestiau");
   }
 });
 
