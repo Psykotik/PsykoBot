@@ -7,7 +7,7 @@ module.exports = {
     var m = ("00" + d.getMinutes()).substr(-2, 2);
     var s = ("00" + d.getSeconds()).substr(-2, 2);
     var ms = ("000" + d.getMilliseconds()).substr(-3, 3);
-    var timestamp = '[' + h + ':' + m + ':' + s + ':' + ms + ']';
+    var timestamp = '[' + h + ':' + m + ':' + s + '.' + ms + ']';
     return timestamp;
   },
 

@@ -32,6 +32,12 @@ $ git clone https://github.com/Psykotik/PsykoBot && cd ./PsykoBot
 $ node bot.js
 ```
 
+If you need to install node
+```
+curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+sudo apt-get update && sudo apt-get install -y nodejs npm
+```
+
 Note : Using ```node bot.js``` will start the bot BUT if you run it using a remote server, the bot will shutdown instantly after closing he SSH connection. You can instead use __screen__ to prevent it.
 
 ```bash

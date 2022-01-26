@@ -1,5 +1,10 @@
+const { Client, Intents } = require('discord.js');
+const { token } = require('./config.json');
+
 const Discord = require('discord.js');
-const client = new Discord.Client();
+
+const client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS] });
+
 const config = require('./config.json');
 const request = require('request');
 
@@ -18,7 +23,6 @@ tools.createLogFile(tools.getTime() + " Bot is starting");
 tools.logBoot(); // Logging the boot time
 
 client.on('ready', () => {
-
   tools.appendLogFile(tools.getTime() + ` Bot has succesfully started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
   client.user.setPresence({ game: { name: 'being created' }, status: 'dnd' });
 });
@@ -208,123 +212,6 @@ client.on('message', message => {
   }
 
   //
-  // Apex Legends
-  // TODO: 
-  //
-  else if (message.content.startsWith(prefix + 'apex')) {
-
-    var commandcut = message.content.substr(",apex ".length); //cut "!bot " off of the start of the command
-    var msg = ""; //create message variable
-    var argumentarray = commandcut.split("-"); // split array by "," characters
-    argumentarray.forEach(function (element) { // foreach argument given
-      msg += element + " "; // add argument and space to message
-    }, this);
-
-    var Platform = argumentarray[0];
-    var Player = argumentarray[1];
-
-    if (Platform == null || Platform == '' || Player == null || Platform == '') {
-      Platform = "0";
-      Player = "0";
-      message.channel.send({
-        embed: {
-          color: 13447987,
-          author: {
-            name: client.user.username,
-            icon_url: client.user.avatarURL
-          },
-          title: "Use of apex command",
-          description: "Please use the apex command with the following syntax : ```,apex PLATFORM-PLAYER```",
-          fields: [{
-            name: "Note",
-            value: "You have to follow the instructions below in case you can't retrieve your stats."
-          },
-          {
-            name: "Cannot find your profile?",
-            value: "In order for you to see your stats on ApexTab, your banner tracker must include your kills."
-          },
-          {
-            name: "Why only kills are displayed?",
-            value: "For us to track your headshots and matches, you must add them to your banner as well."
-          }
-          ],
-          timestamp: new Date(),
-          footer: {
-            icon_url: client.user.avatarURL,
-            text: ""
-          }
-        }
-      }
-      );
-      return ("error");
-
-    }
-
-    var apiLink = "https://apextab.com/api/search.php?platform=" + Platform + "&search=" + Player;
-
-    tools.appendLogFile(tools.getTime() + " Executing the request " + apiLink);
-
-    //First API Call to get AID
-    request(apiLink, function (error, response, body) {
-
-      if (error) {
-        return console.error(error);
-      }
-
-      var parsedJson = JSON.parse(body);
-      if (parsedJson.hasOwnProperty('results')) {
-        var aid = parsedJson.results[0].aid;
-      } else {
-        message.channel.send("Hey, the user " + Player + " doesn't exists"); // send arguments into message's channel
-        return ("error");
-      }
-
-      var apiLink2 = "https://apextab.com/api/player.php?aid=" + aid;
-
-      //Second API Call for stats
-      tools.appendLogFile(tools.getTime() + " Executing the request " + apiLink2);
-
-      request(apiLink2, function (error, response, body) {
-
-        if (error) {
-          return console.error(error);
-        }
-        let json = body;
-        var parsedJson = JSON.parse(json);
-        //console.log(parsedJson);
-
-        if (parsedJson.hasOwnProperty('name')) {
-
-          // Link for doc : https://anidiots.guide/first-bot/using-embeds-in-messages
-          const embed = new Discord.RichEmbed()
-            .setTitle(parsedJson.name + " statistics on " + parsedJson.platform)
-            .setAuthor("Apex Legends")
-            .setColor("#CD3333")
-            .setDescription(parsedJson.name + " is level **" + parsedJson.level + "** and has a total of **" + parsedJson.kills + "** kills on **" + parsedJson.matches + "**  matches (KDA : **" + Math.round((parsedJson.kills / parsedJson.matches) * 100) / 100 + "**)")
-            .setFooter(parsedJson.name + " global rank is " + parsedJson.globalrank, parsedJson.avatar)
-            .setThumbnail("https://logodownload.org/wp-content/uploads/2019/02/apex-legends-logo-3.png")
-            .setTimestamp()
-            .setURL("https://apextab.com/" + parsedJson.aid)
-            .addField("Bloodhound", "Matches : **" + parsedJson.matches_Bloodhound + "** Kills : **" + parsedJson.kills_Bloodhound + "** Headshots : **" + parsedJson.headshots_Bloodhound + "** Damages : **" + parsedJson.damage_Bloodhound + "**")
-            .addField("Gibraltar", "Matches : **" + parsedJson.matches_Gibraltar + "** Kills : **" + parsedJson.kills_Gibraltar + "** Headshots : **" + parsedJson.headshots_Gibraltar + "** Damages : **" + parsedJson.damage_Gibraltar + "**")
-            .addField("Lifeline", "Matches : **" + parsedJson.matches_Lifeline + "** Kills : **" + parsedJson.kills_Lifeline + "** Headshots : **" + parsedJson.headshots_Lifeline + "** Damages : **" + parsedJson.damage_Lifeline + "**")
-            .addField("Pathfinder", "Matches : **" + parsedJson.matches_Pathfinder + "** Kills : **" + parsedJson.kills_Pathfinder + "** Headshots : **" + parsedJson.headshots_Pathfinder + "** Damages : **" + parsedJson.damage_Pathfinder + "**")
-            .addField("Wraith", "Matches : **" + parsedJson.matches_Wraith + "** Kills : **" + parsedJson.kills_Wraith + "** Headshots : **" + parsedJson.headshots_Wraith + "** Damages : **" + parsedJson.damage_Wraith + "**")
-            .addField("Bangalore", "Matches : **" + parsedJson.matches_Bangalore + "** Kills : **" + parsedJson.kills_Bangalore + "** Headshots : **" + parsedJson.headshots_Bangalore + "** Damages : **" + parsedJson.damage_Bangalore + "**")
-            .addField("Caustic", "Matches : **" + parsedJson.matches_Caustic + "** Kills : **" + parsedJson.kills_Caustic + "** Headshots : **" + parsedJson.headshots_Caustic + "** Damages : **" + parsedJson.damage_Caustic + "**")
-            .addField("Mirage", "Matches : **" + parsedJson.matches_Mirage + "** Kills : **" + parsedJson.kills_Mirage + "** Headshots : **" + parsedJson.headshots_Mirage + "** Damages : **" + parsedJson.damage_Mirage + "**")
-            .addBlankField(true)
-            .addBlankField(true)
-          message.channel.send({ embed });
-        }
-
-      })
-
-    });
-
-  }
-
-  //
   // Automatic response, nothing important here
   //
   else if (message.content.startsWith(lang.tableflip)) {
@@ -340,7 +227,7 @@ client.on('message', message => {
 
 
 // External file for token + bot login. Should be the last line
-client.login(config.token);
+client.login(token);
 
 
 

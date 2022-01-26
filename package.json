@@ -4,12 +4,11 @@
   "description": "PsykoBot is a very simple Discord bot, with few features that you can run on your own ! The only needed thing is a computer !",
   "main": "bot.js",
   "dependencies": {
-    "discord.js": "^11.2.1",
+    "discord.js": "^12.5.3",
     "mkdirp": "^0.5.1",
     "request": "^2.88.0",
     "xmlhttprequest": "^1.8.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
