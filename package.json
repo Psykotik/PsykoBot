@@ -21,5 +21,9 @@
   "bugs": {
     "url": "https://github.com/Psykotik/PsykoBot/issues"
   },
-  "homepage": "https://github.com/Psykotik/PsykoBot#readme"
+  "homepage": "https://github.com/Psykotik/PsykoBot#readme",
+  "nodemonConfig": {
+    "ignore": ["miscallenous/*"],
+    "delay": 2500
+  }
 }
