@@ -30,7 +30,7 @@ module.exports = {
 
         function embedFormat(message) {
 
-            var embed = new Discord.RichEmbed()
+            var embed = new Discord.MessageEmbed()
             .setTitle("Uptime")
             .setColor("#CD3333")
             .setDescription("Psykobot has started since " + message)

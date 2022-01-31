@@ -11,7 +11,6 @@ const request = require('request');
 // Bot's requirement
 const tools = require('./src/tools');
 const adminCmds = require('./src/adminCmds');
-const apex = require('./src/apexLegends');
 const wow = require('./src/worldOfWarcraft');
 
 const loc = config.language + '.json';
@@ -39,16 +38,6 @@ client.on('warn', function (msg) {
 client.on('error', function (err) {
   tools.appendLogFile(err.message);
   process.exit(1);
-});
-
-client.on("guildCreate", guild => {
-  // This event triggers when the bot joins a guild.
-  tools.appendLogFile(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-});
-
-client.on("guildDelete", guild => {
-  // this event triggers when the bot is removed from a guild.
-  tools.appendLogFile(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
 client.on('message', message => {
@@ -94,13 +83,13 @@ client.on('message', message => {
       //console.log(userDetails)
 
       if (userDetails.hasOwnProperty('name')) {
-        var embed = new Discord.RichEmbed()
+        var embed = new Discord.MessageEmbed()
           .setTitle(userDetails.name + "'s informations (" + userDetails.race + " " + userDetails.active_spec_name + " " + userDetails.class + ")")
           .setColor(color)
           .addField("Raider.io score ", userDetails.mythic_plus_scores.all, false)
           .addField("Raider.io overall Mythic+ rank", "World : " + userDetails.mythic_plus_ranks.overall.world + "\n Region : " + userDetails.mythic_plus_ranks.overall.region + " \nRealm : " + userDetails.mythic_plus_ranks.overall.realm, true)
           .addField("Raider.io class Mythic+ rank", "World : " + userDetails.mythic_plus_ranks.class.world + "\n Region : " + userDetails.mythic_plus_ranks.class.region + "\n Realm : " + userDetails.mythic_plus_ranks.class.realm, true)
-          .addBlankField()
+          //.addBlankField()
           .addField(userDetails.mythic_plus_recent_runs[0].dungeon + " +" + userDetails.mythic_plus_recent_runs[0].mythic_level + " (+" + userDetails.mythic_plus_recent_runs[0].num_keystone_upgrades + ")",
             "Score : " + userDetails.mythic_plus_recent_runs[0].score +
             "\n Affixs :" + " [" + userDetails.mythic_plus_recent_runs[0].affixes[0].name + "](" + userDetails.mythic_plus_recent_runs[0].affixes[0].wowhead_url + ")" + ", [" + userDetails.mythic_plus_recent_runs[0].affixes[1].name + "](" + userDetails.mythic_plus_recent_runs[0].affixes[1].wowhead_url + ")" + ", [" + userDetails.mythic_plus_recent_runs[0].affixes[2].name + "](" + userDetails.mythic_plus_recent_runs[0].affixes[2].wowhead_url + ")" + ", [" + userDetails.mythic_plus_recent_runs[0].affixes[3].name + "](" + userDetails.mythic_plus_recent_runs[0].affixes[3].wowhead_url + ")\n", true)

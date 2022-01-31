@@ -74,7 +74,7 @@ module.exports = {
 
 
                     if (parsedJson.hasOwnProperty('name')) {
-                        var embed = new Discord.RichEmbed()
+                        var embed = new Discord.MessageEmbed()
                             .setTitle("ilvl")
                             .setColor("#CD3333")
                             .setDescription(parsedJson.achievement_points)
@@ -90,41 +90,6 @@ module.exports = {
                 }
             })
         })
-
-        /* request(options, (error, response, body) => {
-            if (error) {
-                return console.error(error);
-            }
-            let json = body;
-            var parsedJson = JSON.parse(json);
-            //console.log(parsedJson);
-
-
-            if (parsedJson.hasOwnProperty('name')) {
-                var embed = new Discord.RichEmbed()
-                    .setTitle("ilvl")
-                    .setColor("#CD3333")
-                    .setDescription("ilvl2 ")
-                    //.setFooter(parsedJson.name + " global rank is " + parsedJson.globalrank, parsedJson.avatar)
-                    .setThumbnail("http://51.77.157.113/Psykobot/information.png")
-                    .setTimestamp()
-                    //.setURL("https://apextab.com/" + parsedJson.aid)
-                    .addField("toto")
-                //.addField("Gibraltar", "Matches : **" + parsedJson.matches_Gibraltar + "** Kills : **" + parsedJson.kills_Gibraltar + "** Headshots : **" + parsedJson.headshots_Gibraltar + "** Damages : **" + parsedJson.damage_Gibraltar + "**")
-                //.addField("Lifeline", "Matches : **" + parsedJson.matches_Lifeline + "** Kills : **" + parsedJson.kills_Lifeline + "** Headshots : **" + parsedJson.headshots_Lifeline + "** Damages : **" + parsedJson.damage_Lifeline + "**")
-                //.addField("Pathfinder", "Matches : **" + parsedJson.matches_Pathfinder + "** Kills : **" + parsedJson.kills_Pathfinder + "** Headshots : **" + parsedJson.headshots_Pathfinder + "** Damages : **" + parsedJson.damage_Pathfinder + "**")
-                //.addField("Wraith", "Matches : **" + parsedJson.matches_Wraith + "** Kills : **" + parsedJson.kills_Wraith + "** Headshots : **" + parsedJson.headshots_Wraith + "** Damages : **" + parsedJson.damage_Wraith + "**")
-                //.addField("Bangalore", "Matches : **" + parsedJson.matches_Bangalore + "** Kills : **" + parsedJson.kills_Bangalore + "** Headshots : **" + parsedJson.headshots_Bangalore + "** Damages : **" + parsedJson.damage_Bangalore + "**")
-                //.addField("Caustic", "Matches : **" + parsedJson.matches_Caustic + "** Kills : **" + parsedJson.kills_Caustic + "** Headshots : **" + parsedJson.headshots_Caustic + "** Damages : **" + parsedJson.damage_Caustic + "**")
-                //.addField("Mirage", "Matches : **" + parsedJson.matches_Mirage + "** Kills : **" + parsedJson.kills_Mirage + "** Headshots : **" + parsedJson.headshots_Mirage + "** Damages : **" + parsedJson.damage_Mirage + "**")
-                //.addBlankField(true)
-                //.addBlankField(true)
-
-                return embed;
-
-            }
-        }) */
-
     },
     getColor: function (score) {
 

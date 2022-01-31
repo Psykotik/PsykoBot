@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/Psykotik/PsykoBot#readme",
   "nodemonConfig": {
-    "ignore": ["miscallenous/*"],
+    "ignore": [
+      "miscallenous/*"
+    ],
     "delay": 2500
   }
 }
